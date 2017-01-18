@@ -34,6 +34,7 @@ export default class MessageComposer extends React.Component {
         this.onUploadClick = this.onUploadClick.bind(this);
         this.onUploadFileSelected = this.onUploadFileSelected.bind(this);
         this.onVoiceCallClick = this.onVoiceCallClick.bind(this);
+        this.onStickerClick = this.onStickerClick.bind(this);
         this.onInputContentChanged = this.onInputContentChanged.bind(this);
         this.onUpArrow = this.onUpArrow.bind(this);
         this.onDownArrow = this.onDownArrow.bind(this);
@@ -159,6 +160,10 @@ export default class MessageComposer extends React.Component {
         });
     }
 
+    onStickerClick(ev) {
+        console.log("Make sticker go")
+    }
+
     onInputContentChanged(content: string, selection: {start: number, end: number}) {
         this.setState({
             autocompleteQuery: content,
@@ -255,6 +260,11 @@ export default class MessageComposer extends React.Component {
                     <TintableSvg src="img/icons-video.svg" width="35" height="35"/>
                 </div>;
         }
+        var stickerButton;
+        stickerButton =
+                <div key="controls_sticker" className="mx_MessageComposer_sticker" onClick={this.onStickerClick} title="Sticker">
+                    <TintableSvg src="img/icons-sticker.svg" width="35" height="35"/>
+                </div>;
 
         var canSendMessages = this.props.room.currentState.maySendMessage(
             MatrixClientPeg.get().credentials.userId);
@@ -298,6 +308,7 @@ export default class MessageComposer extends React.Component {
                     onInputStateChanged={this.onInputStateChanged} />,
                 formattingButton,
                 uploadButton,
+                stickerButton,
                 hangupButton,
                 callButton,
                 videoCallButton
