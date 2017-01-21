@@ -25,7 +25,6 @@ import classNames from 'classnames';
 
 import UserSettingsStore from '../../../UserSettingsStore';
 
-
 export default class MessageComposer extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -161,7 +160,13 @@ export default class MessageComposer extends React.Component {
     }
 
     onStickerClick(ev) {
-        console.log("Make sticker go")
+        const stickerUri = "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm";
+        const content = {
+            body: "😃",
+            msgtype: "m.image",
+            url: stickerUri
+        };
+        MatrixClientPeg.get().sendMessage(this.props.room.roomId, content);
     }
 
     onInputContentChanged(content: string, selection: {start: number, end: number}) {
