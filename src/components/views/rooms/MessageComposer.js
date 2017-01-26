@@ -21,6 +21,7 @@ var Modal = require('../../../Modal');
 var sdk = require('../../../index');
 var dis = require('../../../dispatcher');
 import Autocomplete from './Autocomplete';
+import StickerPack from './StickerPack';
 import classNames from 'classnames';
 
 import UserSettingsStore from '../../../UserSettingsStore';
@@ -356,9 +357,15 @@ export default class MessageComposer extends React.Component {
                             height="17" />;
             },
         );
-
+        const test_pack =
+            [   {url: "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm", emoji:""}
+            ,   {url: "mxc://matrix.org/cglBAYnbFhDFbPIJKOwKXjFh", emoji:""}
+            ];
         return (
             <div className="mx_MessageComposer mx_fadable" style={{ opacity: this.props.opacity }}>
+                <StickerPack
+                    stickers={test_pack}
+                />
                 <div className="mx_MessageComposer_wrapper">
                     <div className="mx_MessageComposer_row">
                         {controls}
