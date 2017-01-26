@@ -7,6 +7,7 @@ export default class StickerPack extends React.Component {
         super(props, context); // This probably does nothing
     }
     render() {
+        if(!this.props.visible) return false;
         let stickerPreviews = this.props.stickers.map(sticker => {
             const imageUrl = MatrixClientPeg.get().mxcUrlToHttp(sticker.url);
             return <img
@@ -15,6 +16,14 @@ export default class StickerPack extends React.Component {
                     alt={sticker.emoji}
                     width="64"
                     height="64"
+                    onClick={()=> {
+                        const content = {
+                            body: sticker.emoji,
+                            msgtype: "m.image",
+                            url: sticker.url
+                        };
+                        MatrixClientPeg.get().sendMessage(this.props.room.roomId, content);
+                    }}
                 />
         });
         return (<div> {stickerPreviews} </div>)

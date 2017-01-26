@@ -55,6 +55,7 @@ export default class MessageComposer extends React.Component {
                 wordCount: 0,
             },
             showFormatting: UserSettingsStore.getSyncedSetting('MessageComposer.showFormatting', false),
+            stickerPickerVisible: false,
         };
 
     }
@@ -161,13 +162,7 @@ export default class MessageComposer extends React.Component {
     }
 
     onStickerClick(ev) {
-        const stickerUri = "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm";
-        const content = {
-            body: "😃",
-            msgtype: "m.image",
-            url: stickerUri
-        };
-        MatrixClientPeg.get().sendMessage(this.props.room.roomId, content);
+        this.setState({stickerPickerVisible: !this.state.stickerPickerVisible});
     }
 
     onInputContentChanged(content: string, selection: {start: number, end: number}) {
@@ -358,13 +353,15 @@ export default class MessageComposer extends React.Component {
             },
         );
         const test_pack =
-            [   {url: "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm", emoji:""}
-            ,   {url: "mxc://matrix.org/cglBAYnbFhDFbPIJKOwKXjFh", emoji:""}
+            [   {url: "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm", emoji:"😃"}
+            ,   {url: "mxc://matrix.org/cglBAYnbFhDFbPIJKOwKXjFh", emoji:"😑"}
             ];
         return (
             <div className="mx_MessageComposer mx_fadable" style={{ opacity: this.props.opacity }}>
                 <StickerPack
-                    stickers={test_pack}
+                    stickers = {test_pack}
+                    room = {this.props.room}
+                    visible = {this.state.stickerPickerVisible}
                 />
                 <div className="mx_MessageComposer_wrapper">
                     <div className="mx_MessageComposer_row">
