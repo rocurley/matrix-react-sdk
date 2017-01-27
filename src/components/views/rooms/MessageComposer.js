@@ -21,7 +21,7 @@ var Modal = require('../../../Modal');
 var sdk = require('../../../index');
 var dis = require('../../../dispatcher');
 import Autocomplete from './Autocomplete';
-import StickerPack from './StickerPack';
+import StickerBrowser from './StickerBrowser';
 import classNames from 'classnames';
 
 import UserSettingsStore from '../../../UserSettingsStore';
@@ -55,7 +55,7 @@ export default class MessageComposer extends React.Component {
                 wordCount: 0,
             },
             showFormatting: UserSettingsStore.getSyncedSetting('MessageComposer.showFormatting', false),
-            stickerPickerVisible: false,
+            stickerBrowserVisible: false,
         };
 
     }
@@ -162,7 +162,7 @@ export default class MessageComposer extends React.Component {
     }
 
     onStickerClick(ev) {
-        this.setState({stickerPickerVisible: !this.state.stickerPickerVisible});
+        this.setState({stickerBrowserVisible: !this.state.stickerBrowserVisible});
     }
 
     onInputContentChanged(content: string, selection: {start: number, end: number}) {
@@ -352,16 +352,11 @@ export default class MessageComposer extends React.Component {
                             height="17" />;
             },
         );
-        const test_pack =
-            [   {url: "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm", emoji:"😃"}
-            ,   {url: "mxc://matrix.org/cglBAYnbFhDFbPIJKOwKXjFh", emoji:"😑"}
-            ];
         return (
             <div className="mx_MessageComposer mx_fadable" style={{ opacity: this.props.opacity }}>
-                <StickerPack
-                    stickers = {test_pack}
+                <StickerBrowser
                     room = {this.props.room}
-                    visible = {this.state.stickerPickerVisible}
+                    visible = {this.state.stickerBrowserVisible}
                 />
                 <div className="mx_MessageComposer_wrapper">
                     <div className="mx_MessageComposer_row">
