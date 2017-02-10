@@ -2,22 +2,20 @@ var React = require('react');
 
 import UserSettingsStore from '../../../UserSettingsStore';
 
+var MatrixClientPeg = require('../../../MatrixClientPeg');
+
 var StickerPack = require('./StickerPack');
 
 export default class StickerBrowser extends React.Component {
     constructor(props){
         super(props);
-        //packUrls = UserSettingsStore.getSyncedSetting('StickerPacks.PackUrls',[])
-        const test_pack = {
-            title: "Test Pack",
-            stickers: [
-                {url: "mxc://matrix.org/kMdhagucDXmOoGOCbEtMZWWm", emoji:"😃"},
-                {url: "mxc://matrix.org/cglBAYnbFhDFbPIJKOwKXjFh", emoji:"😑"}
-            ],
-        };
-        this.state = {
-            packs: [test_pack, test_pack],
-        };
+        const packUrls = UserSettingsStore.getSyncedSetting('StickerBrowser.PackUrls',[])
+        Promise.all(
+            packUrls.map(mxcUrl => {
+                const url = MatrixClientPeg.get().mxcUrlToHttp(mxcUrl);
+                return fetch(url).then(response => response.json())
+            })
+        ).then(stickerPacks => this.setState({packs: stickerPacks}));
     }
     render() {
         if(!this.props.visible) return false;
