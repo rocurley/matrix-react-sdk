@@ -44,14 +44,14 @@ export default class StickerBrowser extends React.Component {
         if (this.state.openPack === null) {
             return <StickerPackPreview
                             packs={this.state.packs}
-                            setOpenPack={this.setOpenPack} />
+                            setOpenPack={this.setOpenPack.bind(this)} />
         } else {
             let pack = this.state.packs[this.state.openPack]
             return <StickerPack
                             title = {pack.title}
                             stickers = {pack.stickers}
                             room = {this.props.room}
-                            clearOpenPack = {this.clearOpenPack} />
+                            clearOpenPack = {this.clearOpenPack.bind(this)} />
         }
     }
 
