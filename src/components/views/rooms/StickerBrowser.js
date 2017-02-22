@@ -7,13 +7,13 @@ var MatrixClientPeg = require('../../../MatrixClientPeg');
 var StickerPackPreview = require('./StickerPackPreview');
 
 export default class StickerBrowser extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-				this.state = {openPack: null};
+        this.state = {openPack: null};
         this.client = MatrixClientPeg.get();
         this.update();
     }
-    update(){ //TODO: only update if something relevant changed?
+    update() { //TODO: only update if something relevant changed?
         const packUrls = UserSettingsStore.getSyncedSetting('StickerBrowser.PackUrls',[])
         Promise.all(
             packUrls.map(mxcUrl => {
@@ -22,12 +22,12 @@ export default class StickerBrowser extends React.Component {
             })
         ).then(stickerPacks => this.setState({packs: stickerPacks}));
     }
-		setOpenPack = (event) => {
-			this.setState({openPack: event.target.name});
-		}
-		clearOpenPack = () => {
-			this.setState({openPack: null});
-		}
+    setOpenPack(event) {
+        this.setState({openPack: event.target.name});
+    }
+    clearOpenPack() {
+        this.setState({openPack: null});
+    }
     onAccountData(ev){
         if (ev.getType() == "im.vector.web.settings"){
             this.update();
@@ -41,18 +41,18 @@ export default class StickerBrowser extends React.Component {
     }
     render() {
         if(!this.props.visible) return false;
-				if (this.state.openPack === null) {
-					return <StickerPackPreview
-									packs={this.state.packs}
-									setOpenPack={this.setOpenPack} />
-				} else {
-						let pack = this.state.packs[this.state.openPack]
-						return <StickerPack
-										title = {pack.title}
-										stickers = {pack.stickers}
-										room = {this.props.room}
-										clearOpenPack = {this.clearOpenPack} />
-				}
+        if (this.state.openPack === null) {
+            return <StickerPackPreview
+                            packs={this.state.packs}
+                            setOpenPack={this.setOpenPack} />
+        } else {
+            let pack = this.state.packs[this.state.openPack]
+            return <StickerPack
+                            title = {pack.title}
+                            stickers = {pack.stickers}
+                            room = {this.props.room}
+                            clearOpenPack = {this.clearOpenPack} />
+        }
     }
 
 }
