@@ -16,7 +16,8 @@ function StickerPack (props) {
                     const content = {
                         body: sticker.emoji,
                         msgtype: "m.image",
-                        url: sticker.url
+                        url: sticker.url,
+                        stickerPack: props.packUrl
                     };
                     MatrixClientPeg.get().sendMessage(props.room.roomId, content);
                 }}

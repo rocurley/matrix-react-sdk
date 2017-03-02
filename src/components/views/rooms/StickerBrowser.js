@@ -18,7 +18,12 @@ export default class StickerBrowser extends React.Component {
         Promise.all(
             packUrls.map(mxcUrl => {
                 const url = this.client.mxcUrlToHttp(mxcUrl);
-                return fetch(url).then(response => response.json())
+                return fetch(url)
+                    .then(response => response.json())
+                    .then(pack => {
+                        pack.packUrl = mxcUrl;
+                        return pack
+                    })
             })
         ).then(stickerPacks => this.setState({packs: stickerPacks}));
     }
@@ -50,6 +55,7 @@ export default class StickerBrowser extends React.Component {
             return <StickerPack
                             title = {pack.title}
                             stickers = {pack.stickers}
+                            packUrl = {pack.packUrl}
                             room = {this.props.room}
                             clearOpenPack = {this.clearOpenPack.bind(this)} />
         }
