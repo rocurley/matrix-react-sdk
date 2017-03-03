@@ -5,6 +5,7 @@ import UserSettingsStore from '../../../UserSettingsStore';
 import StickerPack from './StickerPack.js';
 var MatrixClientPeg = require('../../../MatrixClientPeg');
 var StickerPackPreview = require('./StickerPackPreview');
+var fetchStickerPack = require('../../../fetch-stickerpack');
 
 export default class StickerBrowser extends React.Component {
     constructor(props) {
@@ -16,15 +17,7 @@ export default class StickerBrowser extends React.Component {
     update() { //TODO: only update if something relevant changed?
         const packUrls = UserSettingsStore.getSyncedSetting('StickerBrowser.PackUrls',[])
         Promise.all(
-            packUrls.map(mxcUrl => {
-                const url = this.client.mxcUrlToHttp(mxcUrl);
-                return fetch(url)
-                    .then(response => response.json())
-                    .then(pack => {
-                        pack.packUrl = mxcUrl;
-                        return pack
-                    })
-            })
+            packUrls.map(mxcUrl => fetchStickerPack(mxcUrl, this.client))
         ).then(stickerPacks => this.setState({packs: stickerPacks}));
     }
     setOpenPack(event) {
